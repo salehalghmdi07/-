@@ -1,0 +1,146 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "points": { "type": "integer" },
+        "subscription": { "type": "string", "enum": ["normal", "premium", "golden"] },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string" },
+        "city": { "type": "string" },
+        "province": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Ad": {
+      "title": "Ad",
+      "description": "Advertisement for a dress",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "authorUid": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "size": { "type": "string" },
+        "condition": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "city": { "type": "string" },
+        "province": { "type": "string" },
+        "type": { "type": "string", "enum": ["normal", "premium", "golden"] },
+        "status": { "type": "string", "enum": ["pending", "active", "sold", "deleted"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorUid", "title", "price", "category", "status"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A conversation between two users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "lastMessage": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participants", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A single message in a chat",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chatId": { "type": "string" },
+        "senderUid": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["chatId", "senderUid", "text", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "buyerUid": { "type": "string" },
+        "sellerUid": { "type": "string" },
+        "adId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["package", "contact_info", "purchase"] },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["buyerUid", "amount", "type", "status", "createdAt"]
+    },
+    "notification": {
+      "title": "Notification",
+      "description": "A notification for a user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userUid": { "type": "string" },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "type": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userUid", "title", "body", "read", "createdAt"]
+    },
+    "Favorite": {
+      "title": "Favorite",
+      "description": "A user's favorite ad",
+      "type": "object",
+      "properties": {
+        "userUid": { "type": "string" },
+        "adId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userUid", "adId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/ads/{adId}": {
+      "schema": "Ad",
+      "description": "Dress advertisements"
+    },
+    "/chats/{chatId}": {
+      "schema": "Chat",
+      "description": "Conversations"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a conversation"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Financial transactions"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User notifications"
+    },
+    "/favorites/{favoriteId}": {
+      "schema": "Favorite",
+      "description": "User favorite ads"
+    }
+  }
+}
